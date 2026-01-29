@@ -1,0 +1,49 @@
+{
+  "metricFilters": [
+    {
+      "filterName": "UnauthorizedAPICalls",
+      "filterPattern": "{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }",
+      "metricTransformations": [{
+        "metricName": "UnauthorizedAPICallCount",
+        "metricNamespace": "SOC/Security",
+        "metricValue": "1"
+      }]
+    },
+    {
+      "filterName": "RootAccountUsage",
+      "filterPattern": "{ $.userIdentity.type = \"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \"AwsServiceEvent\" }",
+      "metricTransformations": [{
+        "metricName": "RootAccountUsageCount",
+        "metricNamespace": "SOC/Security",
+        "metricValue": "1"
+      }]
+    },
+    {
+      "filterName": "FailedConsoleLogins",
+      "filterPattern": "{ $.eventName = \"ConsoleLogin\" && $.errorMessage = \"Failed authentication\" }",
+      "metricTransformations": [{
+        "metricName": "FailedConsoleLoginCount",
+        "metricNamespace": "SOC/Security",
+        "metricValue": "1"
+      }]
+    },
+    {
+      "filterName": "IAMPolicyChanges",
+      "filterPattern": "{ ($.eventName = DeleteGroupPolicy) || ($.eventName = DeleteRolePolicy) || ($.eventName = PutGroupPolicy) || ($.eventName = PutRolePolicy) || ($.eventName = CreatePolicy) || ($.eventName = DeletePolicy) }",
+      "metricTransformations": [{
+        "metricName": "IAMPolicyChangeCount",
+        "metricNamespace": "SOC/Security",
+        "metricValue": "1"
+      }]
+    },
+    {
+      "filterName": "SecurityGroupChanges",
+      "filterPattern": "{ ($.eventName = AuthorizeSecurityGroupIngress) || ($.eventName = AuthorizeSecurityGroupEgress) || ($.eventName = RevokeSecurityGroupIngress) || ($.eventName = RevokeSecurityGroupEgress) || ($.eventName = CreateSecurityGroup) || ($.eventName = DeleteSecurityGroup) }",
+      "metricTransformations": [{
+        "metricName": "SecurityGroupChangeCount",
+        "metricNamespace": "SOC/Security",
+        "metricValue": "1"
+      }]
+    }
+  ]
+}
